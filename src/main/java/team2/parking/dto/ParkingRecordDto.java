@@ -20,24 +20,26 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import team2.parking.entity.ParkingArea;
 import team2.parking.entity.ParkingRecord;
+import team2.parking.entity.Vehicle;
 
 @AllArgsConstructor
 @ToString
 @Getter
 public class ParkingRecordDto { // 주차 기록 DTO 클래스
 	private Integer recordId;  // 기록 ID
-	private Integer vehicleId; // 차량 ID
+	private VehicleDto vehicleId; // 차량 ID
 	private LocalDateTime entryTime; // 입차 시각
 	private LocalDateTime exitTime; // 출차 시각
-	private Integer areaId; // 주차장소 ID
+	private ParkingAreaDto areaId; // 주차장소 ID
 	private Integer parkingFee; // 주차비
 	
-	public static ParkingRecordDto of(Integer vehicleId, Integer areaId) { // DTO 생성을 위한 메소드
+	public static ParkingRecordDto of(VehicleDto vehicleId, ParkingAreaDto areaId) { // DTO 생성을 위한 메소드
 		return ParkingRecordDto.of(null, vehicleId, null, null, areaId, null);
 	}
 	
-	public static ParkingRecordDto of(Integer recordId, Integer vehicleId, LocalDateTime entryTime, LocalDateTime exitTime, Integer areaId, Integer parkingFee) {
+	public static ParkingRecordDto of(Integer recordId, VehicleDto vehicleId, LocalDateTime entryTime, LocalDateTime exitTime, ParkingAreaDto areaId, Integer parkingFee) {
 		return new ParkingRecordDto(recordId, vehicleId, entryTime, exitTime, areaId, parkingFee);
 	}
 	
@@ -53,7 +55,7 @@ public class ParkingRecordDto { // 주차 기록 DTO 클래스
 			);	
 	}
 	
-	public ParkingRecord toEntity() { // DTO를 엔티티로 변환하는 메소드
-		return ParkingRecord.of(vehicleId, areaId);
+	public ParkingRecord toEntity(Vehicle vehicle, ParkingArea parkingArea) { // DTO를 엔티티로 변환하는 메소드
+		return ParkingRecord.of(vehicle, parkingArea);
 	};
 }
