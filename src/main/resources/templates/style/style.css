@@ -1,0 +1,40 @@
+.used {
+    /* 사용 중인 공간 색상 */
+    background-color: rgb(118, 149, 255);
+    color: white;
+    font-weight: bold;
+    padding-top: 1em;
+}
+
+.free {
+    /* 비어있는 공간 색상 */
+    background-color: rgb(255, 152, 116);
+    color: white;
+    font-weight: bold;
+    padding-top: 1em;
+}
+
+div {
+    /* 기본 폰트 및 크기 */
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    font-size: x-large;
+
+}
+
+.border-primary {
+    /* 파란 테두리 정의 */
+    border: 0.2rem solid rgb(118, 149, 255) !important;
+    border-radius: 8px;
+}
+
+.nav-link {
+    /* 선택되지 않은 구역 색상 */
+    background-color: rgb(157, 189, 255);
+    color: white;
+}
+
+.nav-pills .nav-link.active {
+    /* 선택된 구역 색상 */
+    background-color: rgb(118, 149, 255);
+    color: rgb(255, 152, 116);
+}
