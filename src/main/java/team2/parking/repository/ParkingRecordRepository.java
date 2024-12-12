@@ -11,12 +11,15 @@
  * ========================================================
  * 이홍비    2024.12.12   최초 작성
  * 이홍비    2024.12.12   query method 추가
+ * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성
  * ========================================================
  */
 
 package team2.parking.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import team2.parking.entity.ParkingRecord;
 
@@ -31,8 +34,10 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
     // 입차 ; 기간 내, 출차 ; 기간 외 => 조회
     // 입차 ; 기간 내, 출차 ; 기간 내 => 조회
     // 이때 발생하는 중복 제거 ; Distinct
-    List<ParkingRecord> findDistinctByVehicleVNumberAndEntryTimeBetweenOrExitTimeBetween(String vNumber, LocalDateTime startDate, LocalDateTime endDate);
+    @Query("select distinct pr from ParkingRecord pr join pr.vehicleId v where (v.vNumber = :vNumber and ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate)))")
+    List<ParkingRecord> findDistinctByVehicleAndTimePeriod(@Param("vNumber") String vNumber, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     // startDate ~ endDate 기간 내 입차, 출차 기록 조회
-    List<ParkingRecord> findDistinctByEntryTimeBetweenOrExitTimeBetween(LocalDateTime start, LocalDateTime end);
+    @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate))")
+    List<ParkingRecord> findDistinctByTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
