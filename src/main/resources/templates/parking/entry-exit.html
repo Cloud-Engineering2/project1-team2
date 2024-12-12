@@ -16,12 +16,59 @@
 -->
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>입출차 페이지</title>
 </head>
 <body>
-입출차 페이지
+	<div>입출차 관리</div>
+	<br>
+	<!-- Empty parkingArea => entry --> 
+	<div th:unless="${parkingArea.getInUse()}">
+		<div>
+			<div th:text="|${parkingArea.location} 입차|"></div>
+			<section>
+				<form th:action="@{/admin/entry}" method="post">
+					<div>
+						<label> 차  종  류 : </label>
+						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type">
+					</div>
+					<div>
+						<label> 전 화 번 호 : </label>
+						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel">
+					</div>
+					<div>
+						<label> 차 량 번 호 : </label>
+						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number">
+					</div> 
+					<button id="register" type="submit">입 차</button>
+				</form>
+			</section>
+		</div>
+	</div>
+	<!-- Used parkingArea => exit --> 
+	<div th:if="${parkingArea.getInUse()}"> 
+		<div>
+			<div th:text="|${parkingArea.location} 출차|"></div>
+			<section>
+				<form th:action="@{/admin/exit/{loc} (loc=${parkingArea.location})}" method="post">
+					<div>
+						<label> 차  종  류 : </label>
+						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" th:value="|${parkingArea.location} 출차|" disabled>
+					</div>
+					<div>
+						<label> 전 화 번 호 : </label>
+						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" th:value="|${parkingArea.location} 출차|"disabled>
+					</div>
+					<div>
+						<label> 차 량 번 호 : </label>
+						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" th:value="|${parkingArea.location} 출차|"disabled>
+					</div> 
+					<button id="register" type="submit">출 차</button>
+				</form>
+			</section>
+		</div>
+	</div>
 </body>
 </html>
