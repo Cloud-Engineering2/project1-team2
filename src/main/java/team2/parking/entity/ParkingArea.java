@@ -15,6 +15,8 @@
 
 package team2.parking.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,17 +30,29 @@ import lombok.Getter;
 @Entity
 public class ParkingArea {
 	
-	// PK
+	
 	@Id
 	@Column(nullable=false, name="area_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id; // 1
+	private Integer areaId; // PK 
 	
-	// 주차 공간 위치 : A-01 
+	
 	@Column(nullable=false, length=10)
-	private String location; 
+	private String location; // 주차 공간 위치 : A-01 
 	
-	// 주차 공간 사용 여부
+	
 	@Column(name="in_use", nullable=false, columnDefinition = "BOOLEAN DEFAULT false")
-	private Boolean inUse; 
+	private Boolean inUse;  // 주차 공간 사용 여부
+	
+	
+	protected ParkingArea() {} // 기본 생성자
+	
+	private ParkingArea(String location, Boolean inUse) { //생성자
+		this.location = location;
+		this.inUse = inUse;
+	}
+	
+	public static ParkingArea of(String location, Boolean inUse) { // of 메서드
+		return new ParkingArea(location, inUse);
+	}
 }

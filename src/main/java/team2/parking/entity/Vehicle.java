@@ -10,6 +10,7 @@
  * 작업자       날짜       수정 / 보완 내용
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : DB 설계 기반 entity 작성
+ * 이홍비    2024.12.12   vId 자료형 변경 - Integer
  * ========================================================
  */
 
@@ -29,7 +30,7 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vehicle_id ")
-    private int vId; // 자동 설정되는 차량 고유 id
+    private Integer vId; // 자동 설정되는 차량 고유 id
 
     @Column(name = "vehicle_number", length = 10, nullable = false)
     private String vNumber; // 차량 번호
