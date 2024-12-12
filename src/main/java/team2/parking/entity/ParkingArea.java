@@ -47,12 +47,12 @@ public class ParkingArea {
 	
 	protected ParkingArea() {} // 기본 생성자
 	
-	private ParkingArea(String location) { //생성자
+	private ParkingArea(String location, Boolean inUse) { //생성자
 		this.location = location;
-		this.inUse = false;
+		this.inUse = inUse;
 	}
 	
-	public static ParkingArea of(String location) { // of 메서드
-		return new ParkingArea(location);
+	public static ParkingArea of(String location, Boolean inUse) { // of 메서드
+		return new ParkingArea(location, inUse);
 	}
 }
