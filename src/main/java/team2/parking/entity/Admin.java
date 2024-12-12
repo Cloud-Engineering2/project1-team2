@@ -1,15 +1,3 @@
-package team2.parking.entity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import team2.parking.common.utils.UserRoleTypeAttributeConverter;
-import team2.parking.entity.constant.UserRoleType;
-
 /* Admin.java
  * Parking Lot Management Service
  * 관리자 Entity
@@ -24,6 +12,18 @@ import team2.parking.entity.constant.UserRoleType;
  * 박청조    2024.12.12    Admin Entity 작성
  * ========================================================
  */
+
+package team2.parking.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import team2.parking.common.utils.UserRoleTypeAttributeConverter;
+import team2.parking.entity.constant.UserRoleType;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
