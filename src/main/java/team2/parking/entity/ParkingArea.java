@@ -55,4 +55,8 @@ public class ParkingArea {
 	public static ParkingArea of(String location, Boolean inUse) { // of 메서드
 		return new ParkingArea(location, inUse);
 	}
+
+	public void checkInUse(Boolean inUse) {
+		this.inUse = inUse;
+	}
 }
