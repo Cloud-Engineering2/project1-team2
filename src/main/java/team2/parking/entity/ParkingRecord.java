@@ -10,7 +10,8 @@
 * 작업자       날짜       수정 / 보완 내용
 * ========================================================
 * 허선호    2024.12.12    최초 작성
-* 고민정	  2024.12.12    ParkingArea 연관관계 필드 타입 변경 (Integer -> ParkingArea)
+* 고민정	   2024.12.12    ParkingArea 연관 관계 필드 타입 변경 (Integer -> ParkingArea)
+* 이홍비    2024.12.12    vehicleId 관련 주석 변경
 * ========================================================
 */ 
 
@@ -44,7 +45,7 @@ public class ParkingRecord { // 주차 기록 엔티티
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, updatable = false, name = "vehicle_id", referencedColumnName = "vehicle_id")
-	protected Vehicle vehicleId; // 차량번호
+	protected Vehicle vehicleId; // 차량 고유 id 참조
 	
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
