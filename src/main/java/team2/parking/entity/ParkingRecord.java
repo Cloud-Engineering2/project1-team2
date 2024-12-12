@@ -44,7 +44,7 @@ public class ParkingRecord { // 주차 기록 엔티티
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, updatable = false, name = "vehicle_id", referencedColumnName = "vehicle_id")
-	protected Integer vehicleId; // 차량번호
+	protected Vehicle vehicleId; // 차량번호
 	
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
@@ -60,12 +60,12 @@ public class ParkingRecord { // 주차 기록 엔티티
 	
 	protected ParkingRecord() {}
 	
-	private ParkingRecord(Integer vehicleId, ParkingArea areaId) { //생성자
+	private ParkingRecord(Vehicle vehicleId, ParkingArea areaId) { //생성자
 		this.vehicleId = vehicleId;
 		this.areaId = areaId;
 	}
 	
-	public static ParkingRecord of(Integer vehicleId, ParkingArea areaId) { //입차 시 사용하는 of 메서드
+	public static ParkingRecord of(Vehicle vehicleId, ParkingArea areaId) { //입차 시 사용하는 of 메서드
 		return new ParkingRecord(vehicleId, areaId);
 	}
 	
