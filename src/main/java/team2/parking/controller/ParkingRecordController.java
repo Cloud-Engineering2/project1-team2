@@ -11,16 +11,18 @@
  * 작업자       날짜       수정 / 보완 내용
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : ParkingRecordService test
+ * 이홍비    2024.12.12   getParkingRecords()
  * ========================================================
  */
 
 package team2.parking.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import team2.parking.dto.ParkingRecordDto;
 import team2.parking.service.ParkingRecordService;
 
@@ -28,32 +30,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/admin")
+@Controller
+@RequestMapping("/admin/parking/history")
 public class ParkingRecordController {
 
     private final ParkingRecordService parkingRecordService;
 
-    @GetMapping("/test1")
-    public List<ParkingRecordDto> getRecords() {
-        return parkingRecordService.getAllParkingRecords();
-    }
+    @GetMapping()
+    public String getParkingRecords(ModelMap model) { // /admin/parking/history 접속 시 처리 : 모든 주차 기록 출력
 
-    @GetMapping("/test2")
-    public List<ParkingRecordDto> getRecordsByVNumberAndPeriod() {
-        LocalDateTime start = LocalDateTime.of(2024,12,8, 0, 0);
-        LocalDateTime end = LocalDateTime.of(2024,12,11, 0, 0);
-        String vNumber = "54바7226";
+        List<ParkingRecordDto> recordDtos = parkingRecordService.getAllParkingRecords(); // 모든 주차 기록 get
 
-        return parkingRecordService.getParkingRecordsForVehicleInPeriod(vNumber, start, end);
-    }
+        model.addAttribute("parkingRecords", recordDtos); // 해당 기록을 ModelMap 에 추가함
 
-    @GetMapping("/test3")
-    public List<ParkingRecordDto> getRecordsByPeriod() {
-        LocalDateTime start = LocalDateTime.of(2024,12,8, 0, 0);
-        LocalDateTime end = LocalDateTime.of(2024,12,11, 0, 0);
+        return "parking/history"; // history.html 로 경로 반환
 
-        return parkingRecordService.getParkingRecordsInPeriod(start, end);
     }
 
 
