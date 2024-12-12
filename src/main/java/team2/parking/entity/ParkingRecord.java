@@ -10,7 +10,7 @@
 * 작업자       날짜       수정 / 보완 내용
 * ========================================================
 * 허선호    2024.12.12    최초 작성
-* 
+* 고민정	  2024.12.12    ParkingArea 연관관계 필드 타입 변경 (Integer -> ParkingArea)
 * ========================================================
 */ 
 
@@ -54,18 +54,18 @@ public class ParkingRecord { // 주차 기록 엔티티
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, updatable = false, name = "area_id", referencedColumnName = "area_id")
-	protected Integer areaId; // 주차 위치
+	protected ParkingArea areaId; // 주차 위치
 	
 	protected Integer parkingFee; //주차 요금
 	
 	protected ParkingRecord() {}
 	
-	private ParkingRecord(Integer vehicleId, Integer areaId) { //생성자
+	private ParkingRecord(Integer vehicleId, ParkingArea areaId) { //생성자
 		this.vehicleId = vehicleId;
 		this.areaId = areaId;
 	}
 	
-	public static ParkingRecord of(Integer vehicleId, Integer areaId) { //입차 시 사용하는 of 메서드
+	public static ParkingRecord of(Integer vehicleId, ParkingArea areaId) { //입차 시 사용하는 of 메서드
 		return new ParkingRecord(vehicleId, areaId);
 	}
 	
