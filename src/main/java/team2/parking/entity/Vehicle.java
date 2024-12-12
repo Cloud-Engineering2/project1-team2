@@ -29,7 +29,7 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vehicle_id ")
-    private int vId; // 자동 설정되는 차량 고유 id
+    private Integer vId; // 자동 설정되는 차량 고유 id
 
     @Column(name = "vehicle_number", length = 10, nullable = false)
     private String vNumber; // 차량 번호
