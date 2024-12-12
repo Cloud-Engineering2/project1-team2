@@ -29,7 +29,8 @@
 		<div>
 			<div th:text="|${parkingArea.location} 입차|"></div>
 			<section>
-				<form th:action="@{/admin/entry}" method="post">
+				<form th:action="@{/admin/entry}" method="post" id="entry-form">
+					<input type="hidden" name="area_id" th:value="${parkingArea.id}"
 					<div>
 						<label> 차  종  류 : </label>
 						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type">

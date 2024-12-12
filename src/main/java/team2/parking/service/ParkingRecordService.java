@@ -11,6 +11,7 @@
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : Service
  * 이홍비    2024.12.12   호출 함수 변경 (getParkingRecordsForVehicleInPeriod(), getParkingRecordsInPeriod())
+ * 고민정    2024.12.12   addParkingRecord 메서드 작성
  * ========================================================
  */
 
@@ -21,7 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import team2.parking.dto.ParkingRecordDto;
+import team2.parking.entity.ParkingArea;
+import team2.parking.entity.ParkingRecord;
+import team2.parking.entity.Vehicle;
+import team2.parking.repository.ParkingAreaRepository;
 import team2.parking.repository.ParkingRecordRepository;
+import team2.parking.repository.VehicleRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +39,8 @@ import java.util.List;
 @Service
 public class ParkingRecordService {
     private final ParkingRecordRepository parkingRecordRepository;
+    private final VehicleRepository vehicleRepository;
+    private final ParkingAreaRepository parkingAreaRepository;
 
     public List<ParkingRecordDto> getAllParkingRecords() { // 모든 주차 기록을 얻는 함수
         return parkingRecordRepository.findAll().stream() // 모든 주차 기록 get => 스트림
@@ -58,6 +66,25 @@ public class ParkingRecordService {
         return parkingRecordRepository.findDistinctByTimePeriod(start, end).stream()
                 .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
                 .toList(); // List 로
+    }
+    
+   
+    public void addParkingRecord(ParkingRecordDto parkingRecordDto) { // 주차 기록 추가
+    	
+    	Integer vehicleId = parkingRecordDto.getVehicleId().getId(); // VehicleDto Id
+    	Integer parkingAreaId = parkingRecordDto.getAreaId().getId(); // ParkingAreaDto Id
+    	
+    	 Vehicle vehicle = vehicleRepository.findById(vehicleId) // Vehicle 엔티티
+    		        						.orElseThrow(() -> new RuntimeException("Vehicle not found"));
+	     ParkingArea parkingArea = parkingAreaRepository.findById(parkingAreaId) // ParkingArea 엔티티
+    		        									.orElseThrow(() -> new RuntimeException("ParkingArea not found"));
+    		    
+    	ParkingRecord parkingRecord = parkingRecordDto.toEntity(vehicle, parkingArea); // ParkingRecord : DTO -> Entity
+    	
+    	
+    	parkingRecord.updateEntryTime(); // 입차 시각 = 등록하는 현재 시각
+    	
+    	parkingRecordRepository.save(parkingRecord); // ParkingRecord 추가
     }
 
 }

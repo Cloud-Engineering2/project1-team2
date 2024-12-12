@@ -10,6 +10,7 @@
 * 작업자       날짜       수정 / 보완 내용
 * ========================================================
 * 고민정    2024.12.12    ParkingArea 서비스 생성
+* 고민정    2024.12.12    id, location으로 ParkingArea 조회 메서드 작성
 * ========================================================
 */ 
 
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import team2.parking.dto.ParkingAreaDto;
+import team2.parking.entity.ParkingArea;
 import team2.parking.repository.ParkingAreaRepository;
 
 @RequiredArgsConstructor
@@ -35,4 +37,23 @@ public class ParkingAreaService {
 									.orElseThrow();
 		
 	}
+	
+	@Transactional
+	public ParkingAreaDto getArea(Integer area_id) {
+		return parkingAreaRepository.findById(area_id)
+									.map(ParkingAreaDto::from)
+									.orElseThrow();
+		
+	}
+	
+	
+	@Transactional
+    public void updateInUse(Integer areaId, Boolean inUse) {
+        ParkingArea parkingArea = parkingAreaRepository.findById(areaId)
+            .orElseThrow(() -> new IllegalArgumentException("주차 구역을 찾을 수 없습니다: " + areaId));
+        
+        
+        parkingArea.checkInUse(inUse); // inUse 값 변경
+
+    }
 }
