@@ -37,9 +37,7 @@ public class ParkingController {
 	@GetMapping(value = "/search/{vehicleno}")
 	public String getParkingrecordByVehicleno(@PathVariable("vehicleno") Integer vehicleno, Model model) {
 		String view = "/search";
-		//현재 갖고올 데이터가 없으므로 우선 null 개체를 보내 더미 데이터로 출력하도록 설정함.
-		//ParkingRecordDto record = parkingService.getParkingrecordByVehicleno(vehicleno);
-		ParkingRecordDto record = null;
+		ParkingRecordDto record = parkingService.getParkingrecordByVehicleno(vehicleno);
 		model.addAttribute("record", record);
 		return view;
 		
