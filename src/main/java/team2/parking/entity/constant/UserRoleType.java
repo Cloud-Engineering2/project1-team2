@@ -1,10 +1,3 @@
-package team2.parking.entity.constant;
-
-import lombok.Getter;
-import lombok.ToString;
-
-import java.util.Arrays;
-
 /* UserRoleType.java
  * Parking Lot Management Service
  * 사용자 권한 타입
@@ -19,6 +12,13 @@ import java.util.Arrays;
  * 박청조    2024.12.12    UserRoleType 작성
  * ========================================================
  */
+
+package team2.parking.entity.constant;
+
+import lombok.Getter;
+import lombok.ToString;
+
+import java.util.Arrays;
 
 @Getter
 @ToString

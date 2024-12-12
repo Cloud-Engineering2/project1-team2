@@ -1,9 +1,3 @@
-package team2.parking.common.utils;
-
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
-import team2.parking.entity.constant.UserRoleType;
-
 /* UserRoleTypeAttributeConverter.java
  * Parking Lot Management Service
  * 사용자 권한 타입 컨버터
@@ -18,6 +12,12 @@ import team2.parking.entity.constant.UserRoleType;
  * 박청조    2024.12.12    UserRoleType 컨버터 작성
  * ========================================================
  */
+
+package team2.parking.common.utils;
+
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+import team2.parking.entity.constant.UserRoleType;
 
 @Converter
 public class UserRoleTypeAttributeConverter implements AttributeConverter<UserRoleType, String> {
