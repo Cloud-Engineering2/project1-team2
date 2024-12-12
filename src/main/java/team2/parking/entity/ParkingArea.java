@@ -1,14 +1,3 @@
-package team2.parking.entity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-
-
-
 /* ParkingArea.java
 * Parking Lot Management Service
 * 주차 구역(장소) Entity
@@ -23,6 +12,15 @@ import lombok.Getter;
 * 고민정    2024.12.12    ParkingArea Entity 작성
 * ========================================================
 */ 
+
+package team2.parking.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
 
 
 
