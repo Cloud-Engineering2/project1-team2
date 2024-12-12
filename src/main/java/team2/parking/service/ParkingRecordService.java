@@ -10,6 +10,7 @@
  * 작업자       날짜       수정 / 보완 내용
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : Service
+ * 이홍비    2024.12.12   호출 함수 변경 (getParkingRecordsForVehicleInPeriod(), getParkingRecordsInPeriod())
  * ========================================================
  */
 
@@ -48,13 +49,13 @@ public class ParkingRecordService {
     public List<ParkingRecordDto> getParkingRecordsForVehicleInPeriod(String vNumber, LocalDateTime start, LocalDateTime end) { // 특정 기간에 머물던 특정 차량 기록 출력
 
         // 차량 번호 + 날짜 기준 조회 ; 해당 기간 내 그 차가 입차, 출차한 기록
-        return parkingRecordRepository.findDistinctByVehicleVNumberAndEntryTimeBetweenOrExitTimeBetween(vNumber, start, end).stream()
+        return parkingRecordRepository.findDistinctByVehicleAndTimePeriod(vNumber, start, end).stream()
                 .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
                 .toList(); // List 로
     }
 
     public List<ParkingRecordDto> getParkingRecordsInPeriod(LocalDateTime start, LocalDateTime end) { // 특정 기간 내 머물던 기록 조회
-        return parkingRecordRepository.findDistinctByEntryTimeBetweenOrExitTimeBetween(start, end).stream()
+        return parkingRecordRepository.findDistinctByTimePeriod(start, end).stream()
                 .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
                 .toList(); // List 로
     }
