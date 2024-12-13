@@ -14,6 +14,7 @@
  * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성 - 주차 기록 조회
  * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성
  * 허선호    2024.12.13   findByExitTimeIsNull 쿼리 메소드 추가
+ * 고민정    2024.12.13   findFirstByAreaIdOrderByEntryTimeDesc 메서드 추가
  * 이홍비    2024.12.13   @Query() 작성 - 주차비 조회 // Page<> 구현
  * 박청조    2024.12.13   사용중인 주차 공간 id 리스트로 주차 기록들 조회하는 메소드 추가
  *                      전체 주차 기록에서 요금 합계 계산하는 메소드 추가
@@ -28,10 +29,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import team2.parking.entity.ParkingArea;
 import team2.parking.entity.ParkingRecord;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, Integer> {
@@ -84,5 +88,10 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
 
     // 현재 주차 중인 차량 검색
 	  List<ParkingRecord> findByExitTimeIsNull();
+
+	
+	// 한 구역에 대한 주차 기록 중 가장 최근의 것 조회
+	Optional<ParkingRecord> findFirstByAreaIdOrderByEntryTimeDesc(ParkingArea parkingArea); 
+
 
 }

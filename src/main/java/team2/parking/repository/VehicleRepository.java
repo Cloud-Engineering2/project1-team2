@@ -9,7 +9,7 @@
  * ========================================================
  * 작업자       날짜       수정 / 보완 내용
  * ========================================================
- * 허선호       2024.12.13 최초 생성
+ * 허선호   2024.12.13    최초 생성
  * ========================================================
  */
 
@@ -22,11 +22,11 @@ import org.springframework.stereotype.Repository;
 
 import team2.parking.entity.Vehicle;
 
+
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
     // 입력된 글자를 포함한 차량 번호 찾기
 	Optional<Vehicle> findByvNumberContaining(String vehicleno);
-	
 
 }

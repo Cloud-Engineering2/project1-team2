@@ -50,5 +50,7 @@ public class ParkingAreaDto {
     public ParkingArea toEntity() { // DTO -> Entity
         return ParkingArea.of(location, inUse);
     }
+    
+    
 
 }
