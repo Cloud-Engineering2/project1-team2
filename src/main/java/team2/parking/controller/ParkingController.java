@@ -49,7 +49,7 @@ public class ParkingController {
 //	getParkingrecordByVehicleno 메소드 작성(인트로페이지에서 로그인 없이 차량 검색할 경우에 동작)
 	@GetMapping(value = "/search/{vehicleno}")
 	public String getParkingrecordByVehicleno(@PathVariable("vehicleno") String vehicleno, Model model) {
-		String view = "/search";
+		String view = "search";
 		ParkingRecordDto record = parkingService.getParkingrecordByVehicleno(vehicleno);
 		model.addAttribute("record", record);
 		return view;
