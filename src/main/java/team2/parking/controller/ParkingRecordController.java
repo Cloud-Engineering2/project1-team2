@@ -13,6 +13,7 @@
  * 이홍비    2024.12.12   최초 작성 : ParkingRecordService test
  * 이홍비    2024.12.12   getParkingRecords()
  * 이홍비    2024.12.12   기존 getParkingRecords() 기능 확장
+ * 이홍비    2024.12.13   시작 날짜, 마지막 날짜 기입 시 html 에서 출력하도록 ModelMap 에 속성 추가
  * ========================================================
  */
 
@@ -59,32 +60,24 @@ public class ParkingRecordController {
 
         // 총수익 get
         int totalEarning = parkingRecordService.getTotalParkingFeesFromRecords(vNumber, start, end);
+        
+//        log.info("vNumber : " + vNumber);
+//        log.info("start : " + start);
+//        log.info("end : " + end);
+//        log.info("Pageable info: page = " + pageable.getPageNumber() + ", size = " + pageable.getPageSize());
+//        log.info("");
+//
+//        System.out.println(recordDtos.getTotalElements());
+//        System.out.println(pagingNumbers);
+//        System.out.println(totalEarning);
 
-
-        log.info("vNumber : " + vNumber);
-        log.info("start : " + start);
-        log.info("end : " + end);
-        log.info("pagingNumbers : " + pagingNumbers);
-        log.info("");
-
-        System.out.println(recordDtos.getTotalElements());
-        System.out.println(pagingNumbers);
-        System.out.println(totalEarning);
-
-        if (start != null && end != null) {
-            List<ParkingRecordDto> check = parkingRecordService.getParkingRecordsInPeriodCh(start, end);
-            System.out.println(check);
-        }
-
-        if (start != null && end != null && vNumber != null) {
-            List<ParkingRecordDto> check = parkingRecordService.getParkingRecordsForVehicleInPeriodCh(vNumber, start, end);
-            System.out.println(check);
-        }
 
         // ModelMap 에 속성으로 추가
         model.addAttribute("parkingRecords", recordDtos);
         model.addAttribute("pagingNumbers", pagingNumbers);
         model.addAttribute("totalEarning", totalEarning);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
 
         return "parking/history"; // history.html 로 경로 반환
 
