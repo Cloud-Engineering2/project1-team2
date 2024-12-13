@@ -61,7 +61,7 @@ public class ParkingController {
 	@GetMapping(value = "/")
 	public String getParkingstatus(@RequestParam(value="zone", 
 		    required = false, defaultValue="A") String zone, Model model) {
-		String view = "/index.html";
+		String view = "index.html"; // url 시작에 "/"가 붙어있으면 Error resolving template 오류 발생할 수 있음.
 
 		List<ParkingAreaDto> status = parkingService.getParkingstatus(zone);
 		
