@@ -12,6 +12,8 @@
  * 이홍비    2024.12.12   최초 작성
  * 이홍비    2024.12.12   query method 추가
  * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성 - 주차 기록 조회
+ * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성
+ * 허선호    2024.12.13   findByExitTimeIsNull 쿼리 메소드 추가
  * 이홍비    2024.12.13   @Query() 작성 - 주차비 조회 // Page<> 구현
  * ========================================================
  */
@@ -48,7 +50,7 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
     // startDate ~ endDate 기간 내 입차, 출차 기록 조회
     @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate))")
     List<ParkingRecord> findDistinctByTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
+  
 
     @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate))")
     Page<ParkingRecord> findParkingRecordsPageByTimePeriod(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable); // Paging 사용하기 위한 것
@@ -70,4 +72,9 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
     // startDate ~ endDate 기간 내 입차, 출차한 기록 주차비 조회
     @Query("select distinct pr.parkingFee from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate)) and pr.parkingFee is not null")
     List<Integer> findDistinctParkingFeeByTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+  
+    // 현재 주차 중인 차량 검색
+	  List<ParkingRecord> findByExitTimeIsNull();
+
 }

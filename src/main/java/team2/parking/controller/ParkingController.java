@@ -1,6 +1,6 @@
 /* ParkingController.java
 * Parking Lot Management Service
-* 주차 기능 관련 컨트롤러
+* 로그인되지 않은 상태에서 주차 조회 관련 컨트롤러
 * 작성자 : semi_lion2 (고민정, 박창조, 이홍비, 허선호)
 * 최종 수정 날짜 : 2024-12-12
 *
@@ -35,11 +35,9 @@ public class ParkingController {
 	
 //	getParkingrecordByVehicleno 메소드 작성(인트로페이지에서 로그인 없이 차량 검색할 경우에 동작)
 	@GetMapping(value = "/search/{vehicleno}")
-	public String getParkingrecordByVehicleno(@PathVariable("vehicleno") Integer vehicleno, Model model) {
+	public String getParkingrecordByVehicleno(@PathVariable("vehicleno") String vehicleno, Model model) {
 		String view = "/search";
-		//현재 갖고올 데이터가 없으므로 우선 null 개체를 보내 더미 데이터로 출력하도록 설정함.
-		//ParkingRecordDto record = parkingService.getParkingrecordByVehicleno(vehicleno);
-		ParkingRecordDto record = null;
+		ParkingRecordDto record = parkingService.getParkingrecordByVehicleno(vehicleno);
 		model.addAttribute("record", record);
 		return view;
 		
