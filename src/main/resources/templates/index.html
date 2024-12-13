@@ -20,14 +20,14 @@
     <div class="container text-center position-absolute top-50 start-50 translate-middle">
 
         <!-- 차량 번호 입력 폼 -->
-        <form>
+        <form id="searchForm" >
             <div class="row">
                 <div class="col-10">
                     <input type="text" class="form-control border-primary" id="vehicleNumber"
                         placeholder="차량 번호를 입력해 주십시오">
                 </div>
                 <div class="col">
-                    <button type="button" id="searchBtn" class="btn btn-primary px-5">조회</button>
+                    <button type="submit" class="btn btn-primary px-5">조회</button>
                 </div>
             </div>
         </form>
@@ -118,21 +118,22 @@
             </div>
         </div>
     </div>
-	<script>
-		
-		const searchBtn = document.querySelector("#searchBtn");
-		searchBtn.addEventListener('click', (e) => {
-			const number = document.getElementById("vehicleNumber").value;
-			location.href="/search/"+number;
-		})
-		
-	</script>
 
 
     <!-- 부트스트랩용 js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    
+    <!-- 입력한 차량 번호로 조회하는 사이트로 이동하는 스크립트 -->
+    <script>
+		const searchForm = document.getElementById("searchForm");
+		searchForm.addEventListener("submit", (e) => {
+			e.preventDefault();
+			const number = document.getElementById("vehicleNumber").value;
+			location.href="/search/"+number;
+		})
+	</script>
 </body>
 
 
