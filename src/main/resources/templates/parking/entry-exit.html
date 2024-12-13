@@ -30,7 +30,7 @@
 			<div th:text="|${parkingArea.location} 입차|"></div>
 			<section>
 				<form th:action="@{/admin/entry}" method="post" id="entry-form">
-					<input type="hidden" name="area_id" th:value="${parkingArea.id}"
+					<input type="hidden" name="area_id" th:value="${parkingArea.id}">
 					<div>
 						<label> 차  종  류 : </label>
 						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type">
@@ -53,18 +53,18 @@
 		<div>
 			<div th:text="|${parkingArea.location} 출차|"></div>
 			<section>
-				<form th:action="@{/admin/exit/{loc} (loc=${parkingArea.location})}" method="post">
+				<form th:action="@{/admin/exit/{loc}(loc=${parkingArea.location})}" method="post">
 					<div>
 						<label> 차  종  류 : </label>
-						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" th:value="|${parkingArea.location} 출차|" disabled>
+						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" th:value="${type}" disabled>
 					</div>
 					<div>
 						<label> 전 화 번 호 : </label>
-						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" th:value="|${parkingArea.location} 출차|"disabled>
+						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" th:value="${ownerTel}" disabled>
 					</div>
 					<div>
 						<label> 차 량 번 호 : </label>
-						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" th:value="|${parkingArea.location} 출차|"disabled>
+						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" th:value="${number}" disabled>
 					</div> 
 					<button id="register" type="submit">출 차</button>
 				</form>

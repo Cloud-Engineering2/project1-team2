@@ -11,7 +11,7 @@
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : Service
  * 이홍비    2024.12.12   호출 함수 변경 (getParkingRecordsForVehicleInPeriod(), getParkingRecordsInPeriod())
- * 고민정    2024.12.12   addParkingRecord 메서드 작성
+ * 고민정    2024.12.12   addEntryParkingRecord, addExitParkingRecord 메서드 작성
  * ========================================================
  */
 
@@ -21,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
+import team2.parking.dto.ParkingAreaDto;
 import team2.parking.dto.ParkingRecordDto;
+import team2.parking.dto.VehicleDto;
 import team2.parking.entity.ParkingArea;
 import team2.parking.entity.ParkingRecord;
 import team2.parking.entity.Vehicle;
@@ -69,7 +71,7 @@ public class ParkingRecordService {
     }
     
    
-    public void addParkingRecord(ParkingRecordDto parkingRecordDto) { // 주차 기록 추가
+    public void addEntryParkingRecord(ParkingRecordDto parkingRecordDto) { // 주차 기록 추가
     	
     	Integer vehicleId = parkingRecordDto.getVehicleId().getId(); // VehicleDto Id
     	Integer parkingAreaId = parkingRecordDto.getAreaId().getId(); // ParkingAreaDto Id
@@ -82,9 +84,44 @@ public class ParkingRecordService {
     	ParkingRecord parkingRecord = parkingRecordDto.toEntity(vehicle, parkingArea); // ParkingRecord : DTO -> Entity
     	
     	
-    	parkingRecord.updateEntryTime(); // 입차 시각 = 등록하는 현재 시각
+		parkingRecord.updateEntryTime(); // 입차 시각 = 등록하는 현재 시각
+    	
     	
     	parkingRecordRepository.save(parkingRecord); // ParkingRecord 추가
     }
+    
+    
+    @Transactional
+    public void addExitParkingRecord(ParkingAreaDto parkingAreaDto) {
 
+    	ParkingArea parkingArea = parkingAreaDto.toEntity();// ParkingArea
+    	parkingArea.updateAreaId(parkingAreaDto.getId());
+    	
+    	ParkingRecord parkingRecord = parkingRecordRepository.findFirstByAreaIdOrderByEntryTimeDesc(parkingArea)  // ParkingArea Id로 가장 최근의 입차 기록 조회
+    														 .orElseThrow(() -> new RuntimeException("ParkingRecord not found"));
+ 
+    	// 출차 시각 및 주차비 정산
+    	parkingRecord.updateExitRecord();
+        
+    }
+    
+    
+    public ParkingRecord getParkingRecordByAreaIdOrderByEntryTimeDesc(ParkingArea parkingArea) {
+    	return parkingRecordRepository.findFirstByAreaIdOrderByEntryTimeDesc(parkingArea)  // ParkingArea Id로 가장 최근의 입차 기록 조회
+    								  .orElseThrow(() -> new RuntimeException("ParkingRecord not found"));
+	
+
+}
+
+
+	public VehicleDto getVehicleByAreaId(Integer areaId) {
+		ParkingArea parkingArea = parkingAreaRepository.findById(areaId)
+														.orElseThrow(() -> new RuntimeException("ParkingArea not found"));
+		ParkingRecord parkingRecord = parkingRecordRepository.findFirstByAreaIdOrderByEntryTimeDesc(parkingArea)  // ParkingArea Id로 가장 최근의 입차 기록 조회
+		  								                     .orElseThrow(() -> new RuntimeException("ParkingRecord not found"));
+		VehicleDto vehicleDto = VehicleDto.from(parkingRecord.getVehicleId());
+		
+		return vehicleDto;
+		
+	}
 }

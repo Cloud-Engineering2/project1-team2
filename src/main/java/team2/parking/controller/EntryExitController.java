@@ -15,6 +15,8 @@
 
 package team2.parking.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,15 +71,16 @@ public class EntryExitController {
 		System.out.println(parkingRecordDto.getAreaId().getLocation());
 		System.out.println(parkingRecordDto.getVehicleId().getNumber());
 		
-		// Vehicle 등록
+//!!		// Vehicle 등록 : 차량 번호가 ParkingRecord에 있는지 확인 후 번호 부여
 		vehicleService.registerVehicle(vehicleDto); 
 		// ParkingRecord 추가
-		parkingRecordService.addParkingRecord(parkingRecordDto);
+		parkingRecordService.addEntryParkingRecord(parkingRecordDto);
 		
 		// ParkingArea.inUse 변경
 		parkingAreaService.updateInUse(areaId, true);
 		
-		return "redirect:/admin/entry-exit/A-09"; // (관리자) 주차현황 페이지로 이동
+		// return "redirect:/admin/parking?area=" + area;
+		return "redirect:/health-check"; // (관리자) 주차현황 페이지로 이동
 	}
 	
 	
@@ -86,12 +89,34 @@ public class EntryExitController {
 	public String removeVehicle(@PathVariable("loc") String location, ModelMap map) {
 		System.out.println("출차 시 차량 삭제");
 		
-		// Vehicle 삭제
+		// location으로 ParkingArea 얻기
+		ParkingAreaDto parkingAreaDto = parkingAreaService.getArea(location);
+		Integer areaId = parkingAreaDto.getId();
 		
 		// ParkingArea.inUse 변경
+		parkingAreaService.updateInUse(areaId, false);
+		
+		// 주차 기록에 출차 시각, 주차비 내용 추가
+		parkingRecordService.addExitParkingRecord(parkingAreaDto);
+				
+				
+//!!	// Vehicle 삭제 
+		
+		// html - ParkingRecord에서 AreaId로 Vehicle 가져오기
+		VehicleDto vehicle = parkingRecordService.getVehicleByAreaId(areaId);
+				
+		System.out.println(vehicle);
+//		map.addAttribute("vehicle", vehicle);
+		map.addAttribute("type", vehicle.getType().name());
+		map.addAttribute("ownerTel", vehicle.getOwnerTel());
+		map.addAttribute("number", vehicle.getNumber());
+		
+		// 주차 현황 페이지 - 구역 추출
+		String area = location.substring(0, 1);
 		
 		
-		return null;
+		// return "redirect:/admin/parking?area=" + area;
+		return "redirect:/health-check";
 		
 	}
 	

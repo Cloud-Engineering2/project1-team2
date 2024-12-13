@@ -12,13 +12,14 @@
 * 허선호    2024.12.12    최초 작성
 * 고민정	  2024.12.12    ParkingArea 연관 관계 필드 타입 변경 (Integer -> ParkingArea)
 * 이홍비    2024.12.12    vehicleId 관련 주석 변경
-* 고민정    2024.12.12	updateEntryTime 메서드 추가
+* 고민정    2024.12.12	updateEntryTime 추가, updateExitRecord 수정
 * ========================================================
 */ 
 
 
 package team2.parking.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -75,9 +76,13 @@ public class ParkingRecord { // 주차 기록 엔티티
 		this.entryTime = LocalDateTime.now();
 	}
 	
-	public void updateExitRecord(Integer parkingFee) { //출차 시 사용하는 updateExitRecord 메서드
-		this.exitTime = LocalDateTime.now();
-		this.parkingFee = parkingFee;
+	public void updateExitRecord() { //출차 시 사용하는 updateExitRecord 메서드
+		this.exitTime = LocalDateTime.now(); // 출차 시각
+		
+		Duration duration = Duration.between(this.entryTime, this.exitTime); // 출차 - 입차 시각
+		int time = (int)(duration.toMinutes()/10); 
+
+		this.parkingFee = time * 500; // 10분에 500원
 	}
 
 }
