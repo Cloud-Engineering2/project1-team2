@@ -12,6 +12,7 @@
 * 허선호    2024.12.12    더미 데이터를 이용한 getParkingrecordByVehicleno 메소드 작성 
 * 허선호    2024.12.13    비로그인 getParkingstatus 주차 현황을 표시하는 메소드 작성
 * 박청조    2024.12.13    관리자 주차 현황 페이지 메소드 작성
+* 박청조    2024.12.13    관리자 주차 현황 페이지 리턴 view 네이밍 수정
 * 
 * ========================================================
 */ 
@@ -110,7 +111,7 @@ public class ParkingController {
 
 		model.addAttribute("area", area);
 
-		return "/parking/status";
+		return "parking/status";
 	}
 
 }
