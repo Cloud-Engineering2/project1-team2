@@ -103,53 +103,69 @@
         <h2 class="text-center fw-bold mb-4">입출차 관리</h2>
     </div>
 	<br>
-	<div class="mb-3 p-3 mt-4" style="background-color: #FFD7C4; color: black; margin: 0 20vw;">
 	<!-- Empty parkingArea => entry --> 
 	<div th:unless="${parkingArea.getInUse()}">
-		<div>
-			<h3 class="text-center fw-bold mb-4" th:text="|${parkingArea.location} 입차|"></h3>
-			<section style="border: 3px solid black; border-radius: 15px; padding: 8%;">
-				<form th:action="@{/admin/entry}" method="post" id="entry-form" style="display: flex; flex-direction: column; align-items: center; justify-content: center;"> 
-					<input type="hidden" name="area_id" th:value="${parkingArea.id}">
-					<div>
-						<label style="font-size: 18px;"> 차&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;종 : </label>
-						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
-					</div>
-					<div>
-						<label style="font-size: 18px;"> 전&nbsp;화&nbsp;번&nbsp;호 : </label>
-						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" style="margin-bottom: 10px; border-radius: 2px; border: white;">
-					</div>
-					<div>
-						<label style="font-size: 18px;"> 차&nbsp;량&nbsp;번&nbsp;호 : </label>
-						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" style="border-radius: 2px; border: white;">
-					</div> 
-					<button id="register" type="submit" style="color: white; background-color: #7695FF; border: #7695FF; border-radius: 2px; padding: 1px 5px;">입 차</button>
-				</form>
-			</section>
+		<div class="mb-3 p-3 mt-4" style="background-color: #FFD7C4; color: black; margin: 0 25vw; padding: 10%;">
+			<div>
+				<h3 class="text-center fw-bold mb-4" th:text="|${parkingArea.location} 입차|"></h3>
+				<section style="border: 3px solid black; border-radius: 15px; margin: 5% 8%; padding: 5% 8%;">
+					<form th:action="@{/admin/entry}" method="post" id="entry-form" style="display: flex; flex-direction: column; align-items: center; justify-content: center; transform: scale(1.3);"> 
+						<input type="hidden" name="area_id" th:value="${parkingArea.id}">
+						<div>
+							<label style="font-size: 18px;"> 차&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;종 : </label>
+							<input type="text" name="vehicle_type" placeholder="SEDAN/HATCHBACK/CONVERTIBLE/SUB/COUPE/WAGON/RV/VAN/TRUCK" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+							<!--
+							<select type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+								<option th:selected="${parkingArea == null}">차 종</option>
+								<option value="SEDAN" th:selected="${parkingArea != null and vehicle.type.name() == 'SEDAN'}">SEDAN</option>
+								<option value="HATCHBACK" th:selected="${parkingArea != null and vehicle.type.name() == 'HATCHBACK'}">HATCHBACK</option>
+								<option value="CONVERTIBLE" th:selected="${parkingArea != null and vehicle.type.name() == 'CONVERTIBLE'}">CONVERTIBLE</option>
+								<option value="SUV" th:selected="${parkingArea != null and vehicle.type.name() == 'SUV'}">SUV</option>
+								<option value="COUPE" th:selected="${parkingArea != null and vehicle.type.name() == 'COUPE'}">COUPE</option>
+								<option value="WAGON" th:selected="${parkingArea != null and vehicle.type.name() == 'WAGON'}">WAGON</option>
+								<option value="RV" th:selected="${parkingArea != null and vehicle.type.name() == 'RV'}">RV</option>
+								<option value="VAN" th:selected="${parkingArea != null and vehicle.type.name() == 'VAN'}">VAN</option>
+								<option value="TRUCK" th:selected="${parkingArea != null and vehicle.type.name() == 'TRUCK'}">TRUCK</option>
+							</select>
+							-->
+						</div>
+						<div>
+							<label style="font-size: 18px;"> 전&nbsp;화&nbsp;번&nbsp;호 : </label>
+							<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+						</div>
+						<div>
+							<label style="font-size: 18px;"> 차&nbsp;량&nbsp;번&nbsp;호 : </label>
+							<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" style="margin-bottom: 20px; border-radius: 2px; border: white;">
+						</div> 
+						<button id="register" type="submit" style="color: white; background-color: #7695FF; border: #7695FF; border-radius: 2px; padding: 5px 20px;">입 차</button>
+					</form>
+				</section>
+			</div>
 		</div>
-	</div>
 	</div>
 	<!-- Used parkingArea => exit --> 
 	<div th:if="${parkingArea.getInUse()}"> 
-		<div>
-			<div th:text="|${parkingArea.location} 출차|"></div>
-			<section>
-				<form th:action="@{/admin/exit/{loc}(loc=${parkingArea.location})}" method="post">
-					<div>
-						<label> 차      종 : </label>
-						<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" th:value="${type}" disabled>
-					</div>
-					<div>
-						<label> 전 화 번 호 : </label>
-						<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" th:value="${ownerTel}" disabled>
-					</div>
-					<div>
-						<label> 차 량 번 호 : </label>
-						<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" th:value="${number}" disabled>
-					</div> 
-					<button id="register" type="submit">출 차</button>
-				</form>
-			</section>
+		<div class="mb-3 p-3 mt-4" style="background-color: #FFD7C4; color: black; margin: 0 25vw; padding: 10%;">
+			<div>
+				<h3 class="text-center fw-bold mb-4" th:text="|${parkingArea.location} 출차|"></h3>
+				<section style="border: 3px solid black; border-radius: 15px; margin: 5% 8%; padding: 5% 8%;">
+					<form th:action="@{/admin/exit/{loc}(loc=${parkingArea.location})}" method="post" id="exit-form" style="display: flex; flex-direction: column; align-items: center; justify-content: center; transform: scale(1.3);">
+						<div>
+							<label style="font-size: 18px;"> 차&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;종 : </label>
+							<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" th:value="${type}" style="margin-bottom: 10px; border-radius: 2px; border: lightgray;" disabled>
+						</div>
+						<div>
+							<label style="font-size: 18px;"> 전&nbsp;화&nbsp;번&nbsp;호 : </label>
+							<input type="tel" name="owner_tel" placeholder="010-1234-5678" id="owner_tel" th:value="${ownerTel}" style="margin-bottom: 10px; border-radius: 2px; border: lightgray;" disabled>
+						</div>
+						<div>
+							<label style="font-size: 18px;"> 차&nbsp;량&nbsp;번&nbsp;호 : </label>
+							<input type="text" name="vehicle_number" placeholder="123가4567" id="vehicle_number" th:value="${number}" style="margin-bottom: 20px; border-radius: 2px; border: lightgray;" disabled>
+						</div> 
+						<button id="remove" type="submit" style="color: white; background-color: #7695FF; border: #7695FF; border-radius: 2px; padding: 5px 20px;">출 차</button>
+					</form>
+				</section>
+			</div>
 		</div>
 	</div>
 </body>

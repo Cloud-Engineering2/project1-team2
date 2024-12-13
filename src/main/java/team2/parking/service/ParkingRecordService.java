@@ -105,11 +105,15 @@ public class ParkingRecordService {
     		    
     	ParkingRecord parkingRecord = parkingRecordDto.toEntity(vehicle, parkingArea); // ParkingRecord : DTO -> Entity
     	
+    	// 입차 시각
+    	LocalDateTime entryTime = LocalDateTime.now();
     	
-		parkingRecord.updateEntryTime(); // 입차 시각 = 등록하는 현재 시각
+		parkingRecord.updateEntryTime(entryTime); // 입차 시각 = 등록하는 현재 시각
     	
     	
     	parkingRecordRepository.save(parkingRecord); // ParkingRecord 추가
+    	
+		
     }
     
     

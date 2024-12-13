@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
+import team2.parking.common.utils.FeeCalculator;
 import team2.parking.dto.ParkingAreaDto;
 import team2.parking.dto.ParkingRecordDto;
 import team2.parking.dto.VehicleDto;
 import team2.parking.entity.ParkingArea;
+import team2.parking.entity.Vehicle;
 import team2.parking.entity.constant.VehicleType;
 import team2.parking.service.ParkingAreaService;
 import team2.parking.service.ParkingRecordService;
@@ -58,9 +60,13 @@ public class EntryExitController {
 	public String registerVehicle(@RequestParam("area_id") Integer areaId,
 								  @RequestParam("vehicle_type") String vehicleType, // entry-exit.html의 입차 form에서 받아온 차 종류, 전화번호, 차 번호를 기반으로 입차 등록
 	        					  @RequestParam("owner_tel") String ownerTel,
-	        					  @RequestParam("vehicle_number") String vehicleNumber) 
+	        					  @RequestParam("vehicle_number") String vehicleNumber,
+	        					  ModelMap map)
+								
 	{
-	
+		
+		
+		
 		System.out.println("입차 시 차량 등록");
 		
 		// 폼 정보로 DTO 생성
@@ -81,7 +87,10 @@ public class EntryExitController {
 		
 		String area = parkingAreaDto.getLocation().substring(0, 1);
 		
+		VehicleDto vehicle = parkingRecordService.getVehicleByAreaId(areaId);
+		map.addAttribute("vehicle", vehicle);
 		return "redirect:/admin/parking?area=" + area;
+		
 	}
 	
 	
