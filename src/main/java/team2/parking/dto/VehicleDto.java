@@ -10,6 +10,7 @@
  * 작업자       날짜       수정 / 보완 내용
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : Vehicle 기반 dto 작성
+ * 고민정	   2024.12.12   updateVid - ParkingRecord 생성 시, Entity의 id가 DTO의 id에 반영되도록
  * ========================================================
  */
 
@@ -52,6 +53,10 @@ public class VehicleDto {
 
     public Vehicle toEntity() { // VehicleDto -> Vehicle
         return Vehicle.of(number, type, ownerTel, isBlacklisted);
+    }
+    
+    public void updateVid(Integer vid) {
+    	this.id = vid;
     }
 
 }

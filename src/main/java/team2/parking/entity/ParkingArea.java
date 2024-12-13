@@ -59,4 +59,8 @@ public class ParkingArea {
 	public void checkInUse(Boolean inUse) {
 		this.inUse = inUse;
 	}
+	
+	public void updateAreaId(Integer areaId) {
+    	this.areaId = areaId;
+    }
 }
