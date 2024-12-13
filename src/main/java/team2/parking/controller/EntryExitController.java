@@ -79,8 +79,9 @@ public class EntryExitController {
 		// ParkingArea.inUse 변경
 		parkingAreaService.updateInUse(areaId, true);
 		
-		// return "redirect:/admin/parking?area=" + area;
-		return "redirect:/health-check"; // (관리자) 주차현황 페이지로 이동
+		String area = parkingAreaDto.getLocation().substring(0, 1);
+		
+		return "redirect:/admin/parking?area=" + area;
 	}
 	
 	
@@ -115,8 +116,8 @@ public class EntryExitController {
 		String area = location.substring(0, 1);
 		
 		
-		// return "redirect:/admin/parking?area=" + area;
-		return "redirect:/health-check";
+		return "redirect:/admin/parking?area=" + area;
+		
 		
 	}
 	
