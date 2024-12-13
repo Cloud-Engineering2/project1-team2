@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login</title>
+  <!-- 부트스트랩 css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- pretendard 한글 폰트 -->
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+  <style>
+    h1 {
+      text-align: center;
+      font-size: xxx-large;
+      margin: 60px;
+    }
+    .postDiv h2 {
+      margin-bottom: 10px;
+    }
+    .postDiv {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      height: 60vh;
+      margin: auto;
+      flex-direction: column;
+      background-color: #FFD7C4;
+    }
+    .postDiv form {
+      width: 60%;
+      height: 60%;
+      border: 2px solid black;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    form div {
+      width: 100%;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center; /* 수평으로 정렬 */
+    }
+
+    form label {
+      margin-bottom: 0; /* label 아래 여백 제거 */
+      width: 20%; /* label의 너비 */
+      text-align: left;
+    }
+    form input {
+      width: 100%; /* input의 너비 */
+      margin-right: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 8px;
+    }
+    form button {
+      margin-top: 10px;
+      width: 40%; /* 버튼 크기 조정 */
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #9DBDFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+    .buttonDiv {
+      justify-content: center;
+    }
+  </style>
+<!--  <link rel="stylesheet" href="style/style.css" />-->
+</head>
+<body>
+<h1>주차 관리 서비스</h1>
+<div class="postDiv">
+  <h2>관리자 로그인</h2>
+  <form th:action="@{/login}" method="post">
+    <div class="inputDiv">
+      <label for="username">ID : </label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div class="inputDiv">
+      <label for="password">PW : </label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div class="buttonDiv">
+      <button type="submit">로그인</button>
+    </div>
+  </form>
+</div>
+<div>
+  <p th:if="${param.error}" style="color: red;">Invalid username or password.</p>
+  <p th:if="${param.logout}" style="color: green;">You have been logged out.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
