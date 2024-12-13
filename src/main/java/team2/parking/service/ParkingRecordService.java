@@ -14,6 +14,7 @@
  * 고민정    2024.12.12   addEntryParkingRecord, addExitParkingRecord 메서드 작성
  * 이홍비    2024.12.13   총수익 계산 및 Page<> 주차 기록 조회 method 구현
  * 박청조    2024.12.13   주차 현황에 필요한 데이터 가져오는 메서드 추가 (ParkingStatusDto, totalFee)
+ * 이홍비    2024.12.13   차량 번호 입력 x 조회 시 vNumber 조건문 관련 처리
  * ========================================================
  */
 
@@ -75,6 +76,7 @@ public class ParkingRecordService {
                 .toList(); // List 로
     }
 
+
     public List<ParkingRecordDto> getParkingRecordsForVehicleInPeriodCh(String vNumber, String startDate, String endDate) { // 특정 기간에 머물던 특정 차량 기록 조회
         // String => LocalDate
         LocalDate startLocalDate = LocalDate.parse(startDate);
@@ -111,7 +113,7 @@ public class ParkingRecordService {
     }
     
     
-    @Transactional
+  
     public void addExitParkingRecord(ParkingAreaDto parkingAreaDto) {
 
     	ParkingArea parkingArea = parkingAreaDto.toEntity();// ParkingArea
@@ -152,22 +154,10 @@ public class ParkingRecordService {
     public int getTotalFee() {
         return parkingRecordRepository.getTotalFee();
     }
+
+  
     public List<ParkingRecordDto> getParkingRecordsInPeriod(LocalDateTime startDate, LocalDateTime endDate) { // 특정 기간 내 머물던 기록 조회
         return parkingRecordRepository.findDistinctByTimePeriod(startDate, endDate).stream() // startDate ~ endDate 기간 내 입차, 출차한 차량 조회 => 스트림
-                .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
-                .toList(); // List 로
-    }
-
-    public List<ParkingRecordDto> getParkingRecordsInPeriodCh(String startDate, String endDate) { // 특정 기간 내 머물던 기록 조회
-        // String => LocalDate
-        LocalDate startLocalDate = LocalDate.parse(startDate);
-        LocalDate endLocalDate = LocalDate.parse(endDate);
-
-        // LocalDate => LocalDateTime
-        LocalDateTime start = startLocalDate.atStartOfDay(); // 0분 0시 0초로 설정
-        LocalDateTime end = endLocalDate.atTime(LocalTime.MAX); // 23시 59분 59.9999초로 설정
-
-        return parkingRecordRepository.findDistinctByTimePeriod(start, end).stream() // startDate ~ endDate 기간 내 입차, 출차한 차량 조회 => 스트림
                 .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
                 .toList(); // List 로
     }
@@ -175,10 +165,7 @@ public class ParkingRecordService {
 
     public Page<ParkingRecordDto> getParkingRecords(String vNumber, String startDate, String endDate, Pageable pageable) { // 주차 기록 조회
 
-
-
-
-        if ((startDate == null) || (endDate == null)) { // startDate 나 endDate 가 null 이다 => 검색 x => /admin/parking/history 처음 접속
+        if ((startDate == null) || "null".equals(startDate) || (endDate == null) || "null".equals(endDate)) { // startDate 나 endDate 가 null 이다 => 검색 x => /admin/parking/history 처음 접속
             // 모든 주차 기록 반환
             return parkingRecordRepository.findAll(pageable) // 전체 기간 - 모든 주차 기록 get => 스트림
                     .map(ParkingRecordDto::from); // ParkingRecord => ParkingRecordDto
@@ -195,8 +182,15 @@ public class ParkingRecordService {
         LocalDateTime start = startLocalDate.atStartOfDay(); // 0분 0시 0초로 설정
         LocalDateTime end = endLocalDate.atTime(LocalTime.MAX); // 23시 59분 59.9999초로 설정
 
+        log.info("getParkingRecords() - vNumber " + vNumber);
+        log.info("getParkingRecords() - vNumber type: " + vNumber.getClass().getName());
 
-        if (vNumber == null) { // 차량 번호가 null 이다 => startDate ~ endDate 기간 내 입출차 기록 조회
+
+        if ((vNumber == null) || "null".equals(vNumber)) { // 차량 번호가 null 이거나 'null' 이다 => startDate ~ endDate 기간 내 입출차 기록 조회
+            // 주의
+            // 차량 번호 입력 x => vNumber 가 null 인데 (출력하면 null 나옴) 이때 null 은 값이 null 인 게 아니라 문자열 null 임
+            // => if (vNumber == null) => 조건문 실행 자체가 안 됨. 왜? vNumber 은 "null" 이지만 null 이 아니니까.
+//            log.info("getParkingRecords() - 'null'.equals(vNumber)");
 
             return parkingRecordRepository.findParkingRecordsPageByTimePeriod(start, end, pageable) // start ~ end 기간 내 입차, 출차한 차량 조회
                     .map(ParkingRecordDto::from); // ParkingRecord => ParkingRecordDto
@@ -206,14 +200,12 @@ public class ParkingRecordService {
             return parkingRecordRepository.findDParkingRecordsPageByVehicleAndTimePeriod(vNumber, start, end, pageable) // start ~ end 기간 내 입차, 출차한 vNumber 차량 조회
                     .map(ParkingRecordDto::from); // ParkingRecord => ParkingRecordDto
         }
-
-
     }
 
     public int getTotalParkingFeesFromRecords(String vNumber, String startDate, String endDate) { // 총수익 계산
         List<Integer> fees = new ArrayList<>(); // 주차피 조회해서 담을 객체
 
-        if ((startDate == null) || (endDate == null)) { // startDate 나 endDate 가 null 이다 => 검색 x => /admin/parking/history 처음 접속
+        if ((startDate == null) || "null".equals(startDate) || (endDate == null) || "null".equals(endDate)) { // startDate 나 endDate 가 null 이다 => 검색 x => /admin/parking/history 처음 접속
             // 전체 기간 총수익 계산
             fees = parkingRecordRepository.findAllParkingFees(); // 모든 주차 기록에서 주차비 조회
 
@@ -238,7 +230,7 @@ public class ParkingRecordService {
         LocalDateTime start = startLocalDate.atStartOfDay(); // 0분 0시 0초로 설정
         LocalDateTime end = endLocalDate.atTime(LocalTime.MAX); // 23시 59분 59.9999초로 설정
 
-        if (vNumber == null) { // 차량 번호가 null 이다 => startDate ~ endDate 기간 내 총수익 계산
+        if ((vNumber == null) || "null".equals(vNumber)) { // 차량 번호가 null 이다 => startDate ~ endDate 기간 내 총수익 계산
             fees = parkingRecordRepository.findDistinctParkingFeeByTimePeriod(start, end);
         }
         else { // startDate ~ endDate 기간 내 차량 번호가 vNumber 인 차 - 총 주차비 계산
@@ -258,14 +250,13 @@ public class ParkingRecordService {
 
 
 
-	public VehicleDto getVehicleByAreaId(Integer areaId) {
-		ParkingArea parkingArea = parkingAreaRepository.findById(areaId)
+    public VehicleDto getVehicleByAreaId(Integer areaId) {
+        ParkingArea parkingArea = parkingAreaRepository.findById(areaId)
 														.orElseThrow(() -> new RuntimeException("ParkingArea not found"));
-		ParkingRecord parkingRecord = parkingRecordRepository.findFirstByAreaIdOrderByEntryTimeDesc(parkingArea)  // ParkingArea Id로 가장 최근의 입차 기록 조회
+        ParkingRecord parkingRecord = parkingRecordRepository.findFirstByAreaIdOrderByEntryTimeDesc(parkingArea)  // ParkingArea Id로 가장 최근의 입차 기록 조회
 		  								                     .orElseThrow(() -> new RuntimeException("ParkingRecord not found"));
-		VehicleDto vehicleDto = VehicleDto.from(parkingRecord.getVehicleId());
+        VehicleDto vehicleDto = VehicleDto.from(parkingRecord.getVehicleId());
 		
-		return vehicleDto;
-		
-	}
+        return vehicleDto;
+		}
 }
