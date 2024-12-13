@@ -13,6 +13,7 @@
  * 이홍비    2024.12.12   호출 함수 변경 (getParkingRecordsForVehicleInPeriod(), getParkingRecordsInPeriod())
  * 고민정    2024.12.12   addEntryParkingRecord, addExitParkingRecord 메서드 작성
  * 이홍비    2024.12.13   총수익 계산 및 Page<> 주차 기록 조회 method 구현
+ * 박청조    2024.12.13   주차 현황에 필요한 데이터 가져오는 메서드 추가 (ParkingStatusDto, totalFee)
  * ========================================================
  */
 
@@ -28,10 +29,11 @@ import team2.parking.dto.ParkingAreaDto;
 import team2.parking.dto.ParkingRecordDto;
 
 import team2.parking.dto.VehicleDto;
-import team2.parking.entity.ParkingArea;
 import team2.parking.entity.ParkingRecord;
-import team2.parking.entity.Vehicle;
+import team2.parking.dto.ParkingStatusDto;
+import team2.parking.entity.ParkingArea;
 import team2.parking.repository.ParkingAreaRepository;
+import team2.parking.entity.Vehicle;
 import team2.parking.repository.ParkingRecordRepository;
 import team2.parking.repository.VehicleRepository;
 
@@ -40,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Objects;
 
 
@@ -128,6 +131,27 @@ public class ParkingRecordService {
     								  .orElseThrow(() -> new RuntimeException("ParkingRecord not found"));
     }
 
+    // 주어진 구역의 주차된 (차량 번호 / 폰 번호 / 위치 / 누적시간 / 누적요금) 데이터 리스트 반환
+    public List<ParkingStatusDto> getInUseParkingStatus(String area) {
+
+        // 1. parking area 에서 사용중인 구역의 id만 추출
+        List<Integer> idList = parkingAreaRepository.findParkingAreasByInUseIsTrueAndLocationStartsWith(area)
+                .stream().mapToInt(ParkingArea::getAreaId).boxed().toList();
+
+        // 2. 추출한 id로 parking record 조회해서 차량번호 / 폰번호 빼내서 객체 생성 (ParkingStatusDto)
+        List<ParkingRecord> records = parkingRecordRepository.findParkingRecordsByExitTimeIsNullAndAreaId_AreaIdIn(idList);
+        return records
+                .stream()
+                .map(record -> new ParkingStatusDto(record.getAreaId(),
+                        record.getVehicleId(),
+                        record.getEntryTime()))
+                .collect(Collectors.toList());
+    }
+
+    // 주차 현황 총 수입 표시를 위한 메서드
+    public int getTotalFee() {
+        return parkingRecordRepository.getTotalFee();
+    }
     public List<ParkingRecordDto> getParkingRecordsInPeriod(LocalDateTime startDate, LocalDateTime endDate) { // 특정 기간 내 머물던 기록 조회
         return parkingRecordRepository.findDistinctByTimePeriod(startDate, endDate).stream() // startDate ~ endDate 기간 내 입차, 출차한 차량 조회 => 스트림
                 .map(ParkingRecordDto::from) // ParkingRecord => ParkingRecordDto
