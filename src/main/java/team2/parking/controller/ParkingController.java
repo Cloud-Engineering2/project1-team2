@@ -1,6 +1,6 @@
 /* ParkingController.java
 * Parking Lot Management Service
-* 주차 기능 관련 컨트롤러
+* 로그인되지 않은 상태에서 주차 조회 관련 컨트롤러
 * 작성자 : semi_lion2 (고민정, 박창조, 이홍비, 허선호)
 * 최종 수정 날짜 : 2024-12-12
 *
