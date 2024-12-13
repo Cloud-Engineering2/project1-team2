@@ -71,6 +71,7 @@
       align-items: center;
       justify-content: center;
       width: 80% !important;
+      font-size: x-large;
     }
     .nav-link.active {
       background-color: #7695FF !important;
@@ -95,8 +96,34 @@
       color: #FFD7C4; /* 선택된 페이지 글자 색상 */
     }
 
+    .border {
+      border: none !important;
+    }
+
+    .card {
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .card.used {
+      background-color: #FF9874 !important;
+    }
+
+    .card.free {
+      background-color: #9DBDFF !important;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+    }
+
     .card-body {
       height: 150px;
+    }
+
+    .textBlue {
+      color: #7695FF;
     }
   </style>
 </head>
@@ -139,27 +166,36 @@
   <div class="border border-primary p-3">
     <div class="row gx-5">
       <div th:each="parking : ${parkingList1}" class="col py-3">
-        <div th:class="${parking.inUse} ? 'card bg-light mb-3 used' : 'card bg-light mb-3 free'" style="max-width: 18rem;">
-          <div class="card-header"
-               th:text="${parking.getLocation()} + (${parking.inUse} ? ' ' + ${parking.getVehicleNumber()} : ' 미사용')"></div>
+        <a th:class="${parking.inUse} ? 'card mb-3 used' : 'card mb-3 free'" style="max-width: 18rem;"
+        th:href="'/admin/entry-exit/' + ${parking.getLocation()}">
+          <div class="card-header">
+            <div th:text="${parking.getLocation()}"
+                 th:classappend="${parking.inUse} ? 'textBlue' : ''"></div>
+            <div th:text="(${parking.inUse} ? ${parking.getVehicleNumber()} : ' 미사용')"></div>
+          </div>
           <div class="card-body">
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getPhoneNumber()}"></p>
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getParkingTime()}">25시간 10분</p>
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getParkingFee()}">5000원</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
     <div class="row gx-5">
       <div th:each="parking : ${parkingList2}" class="col py-3">
-        <div th:class="${parking.inUse} ? 'card bg-light mb-3 used' : 'card bg-light mb-3 free'" style="max-width: 18rem;">
-          <div class="card-header" th:text="${parking.getLocation()} + (${parking.inUse} ? ' ' + ${parking.getVehicleNumber()} : ' 미사용')" th:href="@{/admin/entry-exit/{loc} (loc=${parking.getLocation()})}"></div>
+        <a th:class="${parking.inUse} ? 'card mb-3 used' : 'card mb-3 free'" style="max-width: 18rem;"
+           th:href="'/admin/entry-exit/' + ${parking.getLocation()}">
+          <div class="card-header">
+            <div th:text="${parking.getLocation()}"
+                 th:classappend="${parking.inUse} ? 'textBlue' : ''"></div>
+            <div th:text="(${parking.inUse} ? ${parking.getVehicleNumber()} : ' 미사용')"></div>
+          </div>
           <div class="card-body">
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getPhoneNumber()}"></p>
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getParkingTime()}">25시간 10분</p>
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getParkingFee()}">5000원</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>

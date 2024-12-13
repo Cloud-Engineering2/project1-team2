@@ -113,7 +113,21 @@
 						<input type="hidden" name="area_id" th:value="${parkingArea.id}">
 						<div>
 							<label style="font-size: 18px;"> 차&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;종 : </label>
-							<input type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+							<input type="text" name="vehicle_type" placeholder="SEDAN/HATCHBACK/CONVERTIBLE/SUB/COUPE/WAGON/RV/VAN/TRUCK" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+							<!--
+							<select type="text" name="vehicle_type" placeholder="차종을 입력하세요" id="vehicle_type" style="margin-bottom: 10px; border-radius: 2px; border: white;">
+								<option th:selected="${parkingArea == null}">차 종</option>
+								<option value="SEDAN" th:selected="${parkingArea != null and vehicle.type.name() == 'SEDAN'}">SEDAN</option>
+								<option value="HATCHBACK" th:selected="${parkingArea != null and vehicle.type.name() == 'HATCHBACK'}">HATCHBACK</option>
+								<option value="CONVERTIBLE" th:selected="${parkingArea != null and vehicle.type.name() == 'CONVERTIBLE'}">CONVERTIBLE</option>
+								<option value="SUV" th:selected="${parkingArea != null and vehicle.type.name() == 'SUV'}">SUV</option>
+								<option value="COUPE" th:selected="${parkingArea != null and vehicle.type.name() == 'COUPE'}">COUPE</option>
+								<option value="WAGON" th:selected="${parkingArea != null and vehicle.type.name() == 'WAGON'}">WAGON</option>
+								<option value="RV" th:selected="${parkingArea != null and vehicle.type.name() == 'RV'}">RV</option>
+								<option value="VAN" th:selected="${parkingArea != null and vehicle.type.name() == 'VAN'}">VAN</option>
+								<option value="TRUCK" th:selected="${parkingArea != null and vehicle.type.name() == 'TRUCK'}">TRUCK</option>
+							</select>
+							-->
 						</div>
 						<div>
 							<label style="font-size: 18px;"> 전&nbsp;화&nbsp;번&nbsp;호 : </label>

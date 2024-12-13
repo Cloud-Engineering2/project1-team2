@@ -58,7 +58,9 @@ public class EntryExitController {
 	public String registerVehicle(@RequestParam("area_id") Integer areaId,
 								  @RequestParam("vehicle_type") String vehicleType, // entry-exit.html의 입차 form에서 받아온 차 종류, 전화번호, 차 번호를 기반으로 입차 등록
 	        					  @RequestParam("owner_tel") String ownerTel,
-	        					  @RequestParam("vehicle_number") String vehicleNumber) 
+	        					  @RequestParam("vehicle_number") String vehicleNumber,
+	        					  ModelMap map)
+								
 	{
 	
 		System.out.println("입차 시 차량 등록");
@@ -81,6 +83,8 @@ public class EntryExitController {
 		
 		String area = parkingAreaDto.getLocation().substring(0, 1);
 		
+		VehicleDto vehicle = parkingRecordService.getVehicleByAreaId(areaId);
+		map.addAttribute("vehicle", vehicle);
 		return "redirect:/admin/parking?area=" + area;
 	}
 	

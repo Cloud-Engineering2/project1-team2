@@ -105,8 +105,8 @@
         <div class="row mb-3">
             <div class="col-6">
                 <div class="input-group">
-                    <input type="text" class="form-control datepicker text-center" id="startDate" placeholder="언제부터?" style="background-color: #F0F0F0;">
-                    <input type="text" class="form-control datepicker text-center" id="endDate" placeholder="언제까지?" style="background-color: #F0F0F0;">
+                    <input type="text" class="form-control datepicker text-center" id="startDate" placeholder="언제부터?" style="background-color: #F0F0F0;" th:value="${start != 'null' ? start : ''}">
+                    <input type="text" class="form-control datepicker text-center" id="endDate" placeholder="언제까지?" style="background-color: #F0F0F0;" th:value="${end != 'null' ? end : ''}">>
                 </div>
             </div>
             <div class="col-6">
