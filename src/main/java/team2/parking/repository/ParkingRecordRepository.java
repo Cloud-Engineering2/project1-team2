@@ -15,6 +15,7 @@
  * 이홍비    2024.12.12   query method 오류 발생 (쿼리 생성 불가) => @Query() 직접 작성
  * 허선호    2024.12.13   findByExitTimeIsNull 쿼리 메소드 추가
  * 이홍비    2024.12.13   @Query() 작성 - 주차비 조회 // Page<> 구현
+ * 이홍비    2024.12.13   @Query() 수정 - 기간일 전 입차 -> 출차 x (exitTime == null) 데이터 추출
  * ========================================================
  */
 
@@ -39,20 +40,20 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
     // 입차 ; 기간 내, 출차 ; 기간 외 => 조회
     // 입차 ; 기간 내, 출차 ; 기간 내 => 조회
     // 이때 발생하는 중복 제거 ; Distinct
-    @Query("select distinct pr from ParkingRecord pr join pr.vehicleId v where (v.vNumber = :vNumber and ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate)))")
+    @Query("select distinct pr from ParkingRecord pr join pr.vehicleId v where (v.vNumber = :vNumber and ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate) or (pr.entryTime < :startDate and pr.exitTime is null)))")
     List<ParkingRecord> findDistinctByVehicleAndTimePeriod(@Param("vNumber") String vNumber, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 
-    @Query("select distinct pr from ParkingRecord pr join pr.vehicleId v where (v.vNumber = :vNumber and ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate)))")
+    @Query("select distinct pr from ParkingRecord pr join pr.vehicleId v where (v.vNumber = :vNumber and ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate) or (pr.entryTime < :startDate and pr.exitTime is null)))")
     Page<ParkingRecord> findDParkingRecordsPageByVehicleAndTimePeriod(String vNumber, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable); // Paging 사용하기 위한 것
 
 
     // startDate ~ endDate 기간 내 입차, 출차 기록 조회
-    @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate))")
+    @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate) or (pr.entryTime < :startDate and pr.exitTime is null))")
     List<ParkingRecord> findDistinctByTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-  
 
-    @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate))")
+
+    @Query("select distinct pr from ParkingRecord pr where ((pr.entryTime between :startDate and :endDate) or (pr.exitTime between :startDate and :endDate) or (pr.entryTime < :startDate and pr.exitTime is null))")
     Page<ParkingRecord> findParkingRecordsPageByTimePeriod(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable); // Paging 사용하기 위한 것
 
 
