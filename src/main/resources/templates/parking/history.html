@@ -3,8 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주차 관리 시스템</title>
+    <!-- 부트스트랩 css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- pretendard 한글 폰트 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+    <link rel="stylesheet" href="style/style.css" />
+
+    <style>
+        /* 폰트 적용 */
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        /* 네비게이션 바 */
+        nav {
+            background-color: #7695FF; /* 네비게이션 바 색상 */
+            padding: 10px 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0; /* margin을 0으로 설정 */
+            align-items: center; /* 수직 정렬 */
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+            display: flex;
+            align-items: center; /* 리스트 아이템 내부 수직 정렬 */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+            display: inline-block; /* 높이 일관성을 위해 */
+            line-height: 1; /* 텍스트 수직 중앙 정렬 */
+        }
+
+
+        .nav-links a:hover {
+            background-color: #5d79b7; /* 호버 시 색상 */
+        }
+
+        /* 오른쪽에 '로그아웃' 버튼 */
+        .logout {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .logout:hover {
+            background-color: #4a68a4; /* 호버 시 색상 */
+        }
+
+        /* 선택된 메뉴 항목 스타일 */
+        .nav-links a.active {
+            color: #FFD7C4; /* 선택된 페이지 글자 색상 */
+        }
+    </style>
+
+
 </head>
 <body>
+    <div th:replace="~{layout/header :: headerNav}"></div>
 
+    <div class="container mt-4">
+        <h2 class="text-center fw-bold mb-4">주차 기록 조회</h2>
+
+        <div class="row mb-3">
+            <div class="col-9">
+                <textarea class="form-control text-center" id="vNumber" placeholder="차량 번호를 입력해 주십시오" style="background-color: #F0F0F0;"></textarea>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-outline-secondary w-100" id="searchButton" disabled>
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-6">
+                <div class="input-group">
+                    <input type="text" class="form-control datepicker text-center" id="startDate" placeholder="언제부터?" style="background-color: #F0F0F0;">
+                    <input type="text" class="form-control datepicker text-center" id="endDate" placeholder="언제까지?" style="background-color: #F0F0F0;">
+                </div>
+            </div>
+            <div class="col-6">
+                <input type="text" class="form-control text-center" readonly style="background-color: #F0F0F0;" th:attr="value='총수입       ' + ${totalEarning} + '원'" >
+            </div>
+        </div>
+
+        <div class="mb-3 p-3" style="background-color: #FFD7C4; color: black;">
+            <div class="row">
+                <div class="col text-center">차량 번호</div>
+                <div class="col text-center">입차 시각</div>
+                <div class="col text-center">출차 시각</div>
+                <div class="col text-center">주차 요금</div>
+            </div>
+        </div>
+
+        <div th:each="record : ${parkingRecords}">
+            <div class="mb-2 p-3" th:style="'background-color: ' + (${record.exitTime} == null ? '#7695FF' : '#9DBDFF')"> <!-- 출차 시각이 null 이면 배경색을 #7695FF 로 설정, 그렇지 않으면 #9DBDFF 로 설정 -->
+                <div class="row">
+                    <div class="col text-center" th:text="${record.vehicleId.number}"></div> <!-- 차량 번호 -->
+                    <div class="col text-center" th:text="${#temporals.format(record.entryTime, 'yyyy-MM-dd HH:mm')}"></div> <!-- 입차 시각 -->
+                    <div class="col text-center" th:text="${record.exitTime != null ? #temporals.format(record.exitTime, 'yyyy-MM-dd HH:mm') : '미출차'}"></div> <!-- 출차 시각 -->
+                    <div class="col text-center" th:text="${record.parkingFee != null ? record.parkingFee : '-'}"></div> <!-- 주차비 -->
+                </div>
+            </div>
+        </div>
+
+        <ul class="pagination justify-content-center my-3">
+            <!-- 이전 페이지 버튼 -->
+            <li class="page-item">
+                <a class="page-link" th:classappend="${parkingRecords.hasPrevious()} ? '' : 'disabled'"
+                   th:href="@{/admin/parking/history(page=${parkingRecords.number - 1}, vNumber=${param.vNumber}, startDate=${param.startDate}, endDate=${param.endDate})}">Previous</a>
+            </li>
+
+            <!-- 페이지 번호 목록 -->
+            <li class="page-item" th:each="pagingNumber : ${pagingNumbers}"
+                th:classappend="${pagingNumber == parkingRecords.number} ? 'active' : ''">
+                <a class="page-link" th:href="@{/admin/parking/history(page=${pagingNumber}, vNumber=${param.vNumber}, startDate=${param.startDate}, endDate=${param.endDate})}"
+                   th:text="${pagingNumber + 1}">1</a>
+            </li>
+
+            <!-- 다음 페이지 버튼 -->
+            <li class="page-item">
+                <a class="page-link" th:classappend="${parkingRecords.hasNext()} ? '' : 'disabled'"
+                   th:href="@{/admin/parking/history(page=${parkingRecords.number + 1}, vNumber=${param.vNumber}, startDate=${param.startDate}, endDate=${param.endDate})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div th:replace="~{layout/footer :: footerLayout}"></div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() { // DOM load
+        flatpickr(".datepicker", { // 달력 선택기 활성화
+            dateFormat: "Y-m-d", // 입력 날짜 형태
+            maxDate: "today", // 날짜 변경될 때 실행되는 콜백 함수
+            onChange: function(selectedDates, dateStr, instance) {
+                const startDate = document.querySelectorAll('.datepicker')[0]; // 시작 날짜 get
+                const endDate = document.querySelectorAll('.datepicker')[1]; // 종료 날짜 get
+
+                if (startDate.value && endDate.value) {
+                    const start = new Date(startDate.value);
+                    const end = new Date(endDate.value);
+
+                    if (start > end) {
+                        if (instance.input === startDate) {
+                            alert('시작 날짜는 마지막 날짜 이전이어야 합니다.');
+                            startDate.value = '';
+                        } else if (instance.input === endDate) {
+                            alert('마지막 날짜는 시작 날짜 이후여야 합니다.');
+                            endDate.value = '';
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
+    // 날짜와 차량 번호 입력이 모두 채워졌을 때 버튼을 활성화하는 스크립트
+    document.querySelectorAll("#startDate, #endDate").forEach(input => {
+        input.addEventListener("input", checkForm);
+    });
+
+    function checkForm() {
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+        const searchButton = document.getElementById("searchButton");
+
+        // startDate와 endDate 둘 다 채워졌을 때만 버튼 활성화
+        if (startDate && endDate) {
+            searchButton.disabled = false;
+        } else {
+            searchButton.disabled = true;
+        }
+    }
+
+    // 버튼 클릭 시 GET 요청을 보낼 수 있도록 하기
+    document.getElementById("searchButton").addEventListener("click", function() {
+        const vNumber = document.getElementById("vNumber").value || null; // 빈 값일 때 null 처리
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+
+        // 날짜와 차량 번호를 GET 요청으로 보낼 주소
+        const url = `/admin/parking/history?vNumber=${vNumber}&start=${startDate}&end=${endDate}`;
+        window.location.href = url; // 페이지 리다이렉션
+    });
+</script>
 </html>
