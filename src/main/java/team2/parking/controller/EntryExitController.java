@@ -10,6 +10,7 @@
 * 작업자       날짜       수정 / 보완 내용
 * ========================================================
 * 고민정    2024.12.12    컨트롤러 생성 및 입출차 로직 작성
+* 박청조    2024.12.13    입출차 페이지 리턴 view 네이밍 수정
 * ========================================================
 */ 
 
@@ -51,7 +52,7 @@ public class EntryExitController {
 		ParkingAreaDto parkingArea = parkingAreaService.getArea(location); // loc에 해당하는 주차 구역 Dto 가져오기 
 		map.addAttribute("parkingArea", parkingArea); // html
 		
-		return "/parking/entry-exit";
+		return "parking/entry-exit";
 	}
 	
 	
