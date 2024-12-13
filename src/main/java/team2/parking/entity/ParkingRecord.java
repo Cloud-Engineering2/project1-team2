@@ -72,8 +72,8 @@ public class ParkingRecord { // 주차 기록 엔티티
 		return new ParkingRecord(vehicleId, areaId);
 	}
 	
-	public void updateEntryTime() {
-		this.entryTime = LocalDateTime.now();
+	public void updateEntryTime(LocalDateTime entryTime) {
+		this.entryTime = entryTime;
 	}
 	
 	public void updateExitRecord() { //출차 시 사용하는 updateExitRecord 메서드

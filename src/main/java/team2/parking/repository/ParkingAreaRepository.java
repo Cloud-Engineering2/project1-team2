@@ -35,4 +35,5 @@ public interface ParkingAreaRepository extends JpaRepository<ParkingArea, Intege
 
     // 사용중인 주차 공간 카운트 반환
     long countParkingAreasByInUseIsTrue();
+    
 }
