@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -36,16 +36,16 @@
         <!-- 구역 선택 버튼 -->
         <ul class="nav nav-pills nav-fill my-2">
             <li class="nav-item mx-1">
-                <a class="nav-link active" aria-current="page" href="#">A구역</a>
+                <a class="nav-link active" aria-current="page" href="/?zone=A">A구역</a>
             </li>
             <li class="nav-item mx-1">
-                <a class="nav-link" href="#">B구역</a>
+                <a class="nav-link" href="/?zone=B">B구역</a>
             </li>
             <li class="nav-item mx-1">
-                <a class="nav-link" href="#">C구역</a>
+                <a class="nav-link" href="/?zone=C">C구역</a>
             </li>
             <li class="nav-item mx-1">
-                <a class="nav-link" href="#">D구역</a>
+                <a class="nav-link" href="/?zone=D">D구역</a>
             </li>
         </ul>
         <div class="p-3"></div>
@@ -54,65 +54,65 @@
         <div class="border border-primary p-3">
             <div class="row gx-5">
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-01</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[0].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[0].location}">A-01</p>
+                        <p th:text="${status[0].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card used">
-                        <p>A-02</p>
-                        <p>사용 중</p>
+                    <div th:class="${status[1].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[1].location}">A-01</p>
+                        <p th:text="${status[1].inUse}? '사용 중':'사용 가능'">사용 중</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-03</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[2].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[2].location}">A-01</p>
+                        <p th:text="${status[2].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card used">
-                        <p>A-04</p>
-                        <p>사용 중</p>
+                    <div th:class="${status[3].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[3].location}">A-01</p>
+                        <p th:text="${status[3].inUse}? '사용 중':'사용 가능'">사용 중</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-05</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[4].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[4].location}">A-01</p>
+                        <p th:text="${status[4].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
             </div>
             <div class="row gx-5">
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-06</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[5].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[5].location}">A-01</p>
+                        <p th:text="${status[5].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-07</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[6].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[6].location}">A-01</p>
+                        <p th:text="${status[6].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card used">
-                        <p>A-08</p>
-                        <p>사용 중</p>
+                    <div th:class="${status[7].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[7].location}">A-01</p>
+                        <p th:text="${status[7].inUse}? '사용 중':'사용 가능'">사용 중</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card free">
-                        <p>A-09</p>
-                        <p>사용 가능</p>
+                    <div th:class="${status[8].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[8].location}">A-01</p>
+                        <p th:text="${status[8].inUse}? '사용 중':'사용 가능'">사용 가능</p>
                     </div>
                 </div>
                 <div class="col py-3">
-                    <div class="card used">
-                        <p>A-10</p>
-                        <p>사용 중</p>
+                    <div th:class="${status[9].inUse} ? 'card used' : 'card free'">
+                        <p th:text="${status[9].location}">A-01</p>
+                        <p th:text="${status[9].inUse}? '사용 중':'사용 가능'">사용 중</p>
                     </div>
                 </div>
             </div>
