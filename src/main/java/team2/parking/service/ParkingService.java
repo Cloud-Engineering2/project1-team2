@@ -1,6 +1,6 @@
 /* ParkingService.java
 * Parking Lot Management Service
-* 주차 서비스
+* 로그인되지 않은 상태에서 주차 조회 서비스
 * 작성자 : semi_lion2 (고민정, 박창조, 이홍비, 허선호)
 * 최종 수정 날짜 : 2024.12.12
 *
@@ -34,7 +34,7 @@ public class ParkingService {
 	public ParkingRecordDto getParkingrecordByVehicleno(String vehicleno) {
 //		검색창에 입력한 차량 번호와 일치하는 VehicleDto 찾기
     	VehicleDto vehicleDto = vehicleRepository.findByvNumberContaining(vehicleno)
-    			.map(VehicleDto::from).orElseThrow();
+    			.map(VehicleDto::from).orElseThrow(() -> new IllegalArgumentException("요청하신 차량을 찾을 수 없습니다."));
 		
     	// exitTime이 비어있는 주차 기록을 찾기
 		List<ParkingRecordDto> parkingRecordDtos = parkingRecordRepository.findByExitTimeIsNull()
@@ -46,7 +46,7 @@ public class ParkingService {
 		System.out.println(parkingRecordDtos);
 		ParkingRecordDto result = parkingRecordDtos.stream()
 				.filter(r -> r.getVehicleId().getId().equals(vehicleDto.getId()))
-				.findFirst().orElseThrow();
+				.findFirst().orElseThrow(() -> new IllegalArgumentException("요청하신 차량은 현재 주차 중이 아닙니다."));
 		return result;
 	}
 }
