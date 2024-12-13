@@ -153,8 +153,7 @@
     <div class="row gx-5">
       <div th:each="parking : ${parkingList2}" class="col py-3">
         <div th:class="${parking.inUse} ? 'card bg-light mb-3 used' : 'card bg-light mb-3 free'" style="max-width: 18rem;">
-          <div class="card-header"
-               th:text="${parking.getLocation()} + (${parking.inUse} ? ' ' + ${parking.getVehicleNumber()} : ' 미사용')"></div>
+          <div class="card-header" th:text="${parking.getLocation()} + (${parking.inUse} ? ' ' + ${parking.getVehicleNumber()} : ' 미사용')"></div>
           <div class="card-body">
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getPhoneNumber()}"></p>
             <p class="card-text" th:if="${parking.inUse}" th:text="${parking.getParkingTime()}">25시간 10분</p>
