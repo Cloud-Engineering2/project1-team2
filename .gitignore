@@ -10,9 +10,7 @@ target
 .project
 *.iml
 
-# properties
-*.properties
-*.yml
+
 
 ### Eclipse ###
 .metadata
