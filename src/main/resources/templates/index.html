@@ -134,6 +134,45 @@
 			location.href="/search/"+number;
 		})
 	</script>
+
+    <!-- 선택된 구역 글자 색 변경 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 현재 URL의 파라미터를 가지고 와서 구역 선택
+            const urlParams = new URLSearchParams(window.location.search);
+            let zone = urlParams.get('zone'); // 예 : /?zone=A
+
+            // 처음 홈페이지 들어갔을 때 / : default => A 구역
+            if (!zone) { // URL에 zone 파라미터가 없다
+                zone = 'A'; // => A 로 설정
+            }
+
+            // 모든 링크 요소
+            const links = document.querySelectorAll('.nav-link');
+
+            // 페이지 로드될 때 URL 파라미터에 따라 active 클래스 적용
+            links.forEach(link => {
+                if (link.href.includes(zone)) {
+                    link.classList.add('active'); // 해당 구역에 active 클래스 추가
+                } else {
+                    link.classList.remove('active'); // 다른 구역은 active 클래스 제거
+                }
+            });
+
+            // 링크 클릭 => 클릭한 링크만 active 클래스 추가 - active 클래스 적용
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 모든 링크 => active 클래스 제거
+                    links.forEach(l => l.classList.remove('active'));
+
+                    // 클릭한 링크 => active 클래스 추가
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+
 </body>
 
 
