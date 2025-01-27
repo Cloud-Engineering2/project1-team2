@@ -3,7 +3,7 @@
     <ul class="nav-links">
       <li><a href="/admin/parking" id="status-link" class="active">주차 현황</a></li>
       <li><a href="/admin/parking/history" id="history-link">주차 기록</a></li>
-      <li><a href="/admin/vehicles" id="vehicles-link">차량 조회</a></li>
+      <li><a href="/admin/vehicle/search" id="vehicles-link">차량 조회</a></li>
     </ul>
 
     <!-- 로그아웃 버튼 -->
@@ -28,7 +28,7 @@
       // 현재 페이지에 따라 active 클래스 추가
       if (currentPath.includes('/admin/parking/history')) {
         links.history.classList.add('active');
-      } else if (currentPath.includes('/vehicles')) {
+      } else if (currentPath.includes('/admin/vehicle/search')) {
         links.vehicles.classList.add('active');
       } else {
         links.status.classList.add('active'); // 기본값
