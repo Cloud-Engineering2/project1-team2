@@ -2,7 +2,7 @@
  * Parking Lot Management Service
  * ParkingRecord 의 Repository
  * 작성자 : semi_lion2 (고민정, 박창조, 이홍비, 허선호)
- * 최종 수정 날짜 : 2024.12.12
+ * 최종 수정 날짜 : 2025.01.12
  *
  * ========================================================
  * 프로그램 수정 / 보완 이력
@@ -19,6 +19,7 @@
  * 박청조    2024.12.13   사용중인 주차 공간 id 리스트로 주차 기록들 조회하는 메소드 추가
  * 박청조    2024.12.13   전체 주차 기록에서 요금 합계 계산하는 메소드 추가
  * 이홍비    2024.12.13   @Query() 수정 - 기간일 전 입차 -> 출차 x (exitTime == null) 데이터 추출
+ * 이홍비    2025.01.27   코드 정렬
  * ========================================================
  */
 
@@ -62,7 +63,7 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
     Page<ParkingRecord> findParkingRecordsPageByTimePeriod(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable); // Paging 사용하기 위한 것
 
     
-    // 주차중인 주차 공간의 id 리스트로 주차 기록 조회
+    // 주차 중인 주차 공간의 id 리스트로 주차 기록 조회
     List<ParkingRecord> findParkingRecordsByExitTimeIsNullAndAreaId_AreaIdIn(List<Integer> idList);
 
     @Query("select sum(pr.parkingFee) from ParkingRecord pr where pr.parkingFee is not null")
@@ -88,11 +89,9 @@ public interface ParkingRecordRepository extends JpaRepository<ParkingRecord, In
 
 
     // 현재 주차 중인 차량 검색
-	  List<ParkingRecord> findByExitTimeIsNull();
+	List<ParkingRecord> findByExitTimeIsNull();
 
 	
-	  // 한 구역에 대한 주차 기록 중 가장 최근의 것 조회
-	  Optional<ParkingRecord> findFirstByAreaIdOrderByEntryTimeDesc(ParkingArea parkingArea); 
-
-
+	// 한 구역에 대한 주차 기록 중 가장 최근의 것 조회
+	Optional<ParkingRecord> findFirstByAreaIdOrderByEntryTimeDesc(ParkingArea parkingArea);
 }
