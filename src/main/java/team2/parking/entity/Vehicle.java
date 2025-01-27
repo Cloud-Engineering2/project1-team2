@@ -2,7 +2,7 @@
  * Parking Lot Management Service
  * Vehicle ; 차량 정보 entity
  * 작성자 : semi_lion2 (고민정, 박창조, 이홍비, 허선호)
- * 최종 수정 날짜 : 2024.12.12
+ * 최종 수정 날짜 : 2025.01.05
  *
  * ========================================================
  * 프로그램 수정 / 보완 이력
@@ -11,6 +11,7 @@
  * ========================================================
  * 이홍비    2024.12.12   최초 작성 : DB 설계 기반 entity 작성
  * 이홍비    2024.12.12   vId 자료형 변경 - Integer
+ * 이홍비    2025.01.05   setBlacklisted() - 블랙리스트 등록/해제 설정 함수 추가
  * ========================================================
  */
 
@@ -59,8 +60,8 @@ public class Vehicle {
         return new Vehicle(vNumber, vType, ownerTel, isBlacklisted);
     }
 
-    public void changeBlacklisted(Boolean isBlacklisted) { // 블랙리스트 등록, 해제할 때 사용
-        this.isBlacklisted = isBlacklisted;
+    public void setBlacklisted() { // 블랙리스트 등록, 해제 설정
+        this.isBlacklisted = !this.isBlacklisted;
     }
 }
 
