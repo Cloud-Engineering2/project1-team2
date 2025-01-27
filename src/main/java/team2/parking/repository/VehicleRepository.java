@@ -11,6 +11,7 @@
  * ========================================================
  * 허선호    2024.12.13   최초 생성
  * 이홍비    2025.01.02   findAll(pageable) 함수 추가 - paging 기법 사용
+ * 이홍비    2025.01.05   countByIsBlacklisted() 함수 추가
  * 이홍비    2025.01.27   findAll(pageable) 함수 주석 처리
  * ========================================================
  */
@@ -35,8 +36,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 	Optional<Vehicle> findByvNumberContaining(String vehicleno);
 
     // 등록된 모든 차량 조회
-//    @Query("select v from Vehicle v order by v.vId")
-//    Page<Vehicle> findAll(Pageable pageable);
+    // @Query("select v from Vehicle v order by v.vId")
+    // Page<Vehicle> findAll(Pageable pageable);
 
     // "isBlacklisted" 값으로 설정된 차량 조회
     // 보통 true 로 인수 전달해서 블랙리스트로 등록된 차량 조회할 때 씀
