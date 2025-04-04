@@ -45,8 +45,10 @@
 <br>
 
 ## ☁️ 배포 절차 (Deployment Steps)
+0. 본 프로젝트는 **On-Premise Virtual Machine (온프레미스 가상 머신)** 환경에서 수동으로 배포합니다.
+
 1. **Ubuntu 가상 머신 설치**
-   - Ubuntu 이미지 기반으로 가상머신 구성
+   - Ubuntu 이미지 기반으로 가상 머신 구성
    - 사용자 계정: `lion2`
 
 2. **서버 기본 세팅**
